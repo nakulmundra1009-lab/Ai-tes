@@ -1,39 +1,49 @@
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
+// 🔥 Replace with your Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyBQPRt_XeXmwJz6FCJFYzn5PcPOeC1tzWo",
+  authDomain: "smart-reminder-fc804.firebaseapp.com",
+  projectId: "smart-reminder-fc804",
+  messagingSenderId: "710675286752",
+  appId: "1:710675286752:web:0bb9ca761d73e597475e85"
+};
 
-function enableNotifications() {
-  Notification.requestPermission().then(p => {
-    alert("Permission: " + p);
-  });
-}
+firebase.initializeApp(firebaseConfig);
 
-function addReminder() {
-  const title = document.getElementById('title').value;
-  const time = new Date(document.getElementById('time').value).getTime();
-  const delay = time - Date.now();
+const messaging = firebase.messaging();
 
-  if (delay <= 0) {
-    alert("Choose future time");
+navigator.serviceWorker.register("firebase-messaging-sw.js");
+
+// Enable push permission
+async function enableNotifications() {
+  const permission = await Notification.requestPermission();
+  if (permission !== "granted") {
+    alert("Permission denied");
     return;
   }
 
-  setTimeout(() => {
-    navigator.serviceWorker.ready.then(reg => {
-      reg.showNotification("Reminder", {
-        body: title,
-        icon: "icon.png"
-      });
-    });
-  }, delay);
+  const token = await messaging.getToken({
+    vapidKey: "BOnjfhYBuyhtUFQyLfkXn-OC0RxQWkLQBu9BrrKTMuV7XcPyUFFpJyBsp6gvPnNqb3RMbUNCZHSx01B6AnFrVS4"
+  });
 
-  alert("Reminder set!");
+  localStorage.setItem("fcmToken", token);
+  alert("Notifications enabled!");
+  console.log("FCM Token:", token);
 }
 
-let total = 0;
+// Save reminder
+function addReminder() {
+  const title = document.getElementById("title").value;
+  const time = new Date(document.getElementById("time").value).getTime();
+  const token = localStorage.getItem("fcmToken");
 
-function addExpense() {
-  const amount = Number(document.getElementById('expenseAmount').value);
-  total += amount;
-  document.getElementById('total').innerText = "Total: ₹" + total;
+  if (!token) {
+    alert("Enable notifications first");
+    return;
+  }
+
+  const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+  reminders.push({ title, time });
+  localStorage.setItem("reminders", JSON.stringify(reminders));
+
+  alert("Monthly reminder saved!");
 }
