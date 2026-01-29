@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Reminder & Expense</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>📱 Smart Reminder & Expense App</h1>
+
+<div class="card">
+  <h2>Add Reminder</h2>
+  <input id="title" placeholder="Bill name">
+  <input id="time" type="datetime-local">
+  <button onclick="addReminder()">Add Reminder</button>
+</div>
+
+<div class="card">
+  <h2>Add Expense</h2>
+  <input id="expenseTitle" placeholder="Expense title">
+  <input id="expenseAmount" type="number" placeholder="Amount">
+  <button onclick="addExpense()">Add Expense</button>
+  <h3 id="total">Total: ₹0</h3>
+</div>
+
+<button onclick="enableNotifications()" class="notify">Enable Notifications</button>
+
+<script src="app.js"></script>
+</body>
+</html>
