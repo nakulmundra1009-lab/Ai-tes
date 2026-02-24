@@ -1,22 +1,48 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Smart Reminder</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IKRU x YUVI PROTECTION LIB</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <main class="app">
+    <section class="card fade-in">
+      <h1>IKRU x YUVI PROTECTION LIB</h1>
+      <p class="subtitle">Upload Android <code>lib.so</code> → analyze → protect → download</p>
 
-<h2>Smart Reminder (Firebase Push)</h2>
+      <div id="dropZone" class="drop-zone" tabindex="0" aria-label="Drop lib.so here">
+        <input id="fileInput" type="file" accept=".so,application/octet-stream" hidden>
+        <p><strong>Drag & Drop</strong> your <code>lib.so</code> file here</p>
+        <p class="muted">or</p>
+        <button id="browseBtn" class="btn">Browse File</button>
+        <small>Max 10MB • Only .so files accepted</small>
+      </div>
 
-<input id="title" placeholder="Reminder title">
-<input id="time" type="datetime-local">
-<button onclick="addReminder()">Add Monthly Reminder</button>
+      <div class="workflow">
+        <div class="step" id="step1">1. Upload</div>
+        <div class="step" id="step2">2. Analyze</div>
+        <div class="step" id="step3">3. Protect</div>
+        <div class="step" id="step4">4. Download</div>
+      </div>
 
-<button onclick="enableNotifications()">Enable Notifications</button>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span id="statusText">Waiting for file...</span>
+          <span id="progressText">0%</span>
+        </div>
+        <div class="progress"><div id="progressBar"></div></div>
+      </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
-<script src="app.js"></script>
+      <div class="actions">
+        <button id="protectBtn" class="btn btn-primary" disabled>Start Protection</button>
+        <a id="downloadBtn" class="btn btn-success hidden" download>Download protected_lib.so</a>
+      </div>
 
+      <p id="resultBox" class="result muted">Ready.</p>
+    </section>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
